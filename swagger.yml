@@ -1,0 +1,172 @@
+openapi: 3.0.1
+info:
+  title: Restaurants Service API
+  description: Restaurants from GoOutSafe with Microservices, by team S5
+  version: "0.1"
+servers:
+- url: /
+paths:
+  /restaurants:
+    get:
+      tags:
+      - Restaurants
+      summary: Get all restaurants
+      operationId: views.restaurant.get_restaurants
+      responses:
+        200:
+          description: Return all restaurants
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pets:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Restaurant'
+  /restaurants/{restaurant_id}:
+    get:
+      tags:
+      - Restaurants
+      summary: Get a single restaurant specified by the id 'restaurant_id'
+      operationId: views.restaurant.get_restaurant
+      parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+      responses:
+        200:
+          description: Return restaurant with id 'restaurant_id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+        404:
+          description: Restaurant 'restaurant_id' does not exists
+          content: {}
+  /restaurants/create:
+    post:
+      tags:
+      - Restaurants
+      summary: Create a new restaurant
+      operationId: views.restaurant.create_restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Restaurant'  
+      responses:
+        201:
+          description: Restaurant created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The restaurant ID.
+        500:
+          description: Generic database error
+          content: {}
+  /restaurants/update/{restaurant_id}:
+    parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+    put:
+      tags:
+      - Restaurants
+      summary: Update a restaurant and its tables
+      operationId: views.restaurant.edit_restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  description: The new phone number
+                tables:
+                  type: array
+                  description: todo
+                  items:
+                    $ref: '#/components/schemas/RestaurantTable' 
+      responses:
+        201:
+          description: Restaurant updated
+          content: {}
+        500:
+          description: Generic server error
+          content: {}
+components:
+  schemas:
+    Restaurant:
+      required:
+      - name
+      - lat
+      - lon
+      - phone
+      # - avg_stay_time
+      # - avg_stars
+      # - num_reviews
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier
+          readOnly: true
+          example: 123
+        name:
+          maxLength: 100
+          minLength: 1
+          type: string
+          description: Restaurant's name
+          example: "My Pizza Restaurant"
+        lat:
+          type: number
+          description: Restaurant Latitude
+          example: 42.42
+        lon:
+          type: number
+          description: Restaurant Longitude
+          example: 42.42
+        phone:
+          type: string
+          minLength: 5
+          maxLength: 50
+          description: Restaurant Phone Number
+          example: "050123456"
+        avg_stay_time:
+          type: string
+          format: date-time
+        avg_stars:
+          type: number
+        num_reviews:
+          type: integer
+    RestaurantTable:
+      required:
+      - table_id
+      - seats
+      type: object
+      properties:
+        table_id:
+          type: integer
+          description: First PK
+        restaurant_id:
+          type: integer
+          description: Second PK
+        seats:
+          type: integer
+          description: Number of seats at the table
