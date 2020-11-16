@@ -24,6 +24,45 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Restaurant'
+    post:
+      tags:
+      - Multiple Restaurants
+      summary: Get all restaurants matching the specified ids
+      operationId: restaurants.get_multiple_restaurants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                restaurant_ids:
+                  required: True
+                  type: array
+                  description: List of ids of restaurants to be retrieved
+                  items:
+                    type: integer 
+      responses:
+        200:
+          description: Return restaurants matching provided ids 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  restaurants:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        restaurant_id:
+                          $ref: '#/components/schemas/Restaurant'                  
+        400:
+          description: Bad Request, missing parameters
+          content: {}
+        500:
+          description: Service Fail
+          content: {}
   /restaurants/{restaurant_id}:
     get:
       tags:
@@ -110,6 +149,64 @@ paths:
         500:
           description: Generic server error
           content: {}
+  /reviews/{restaurant_id}:
+    get:
+      tags:
+      - Reviews
+      summary: Return all reviews belonging to the specified restaurant
+      operationId: reviews.get_restaurant_reviews
+      parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+      responses:
+        200:
+          description: Return reviews belonging to restaurant with id 'restaurant_id'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Review'
+        500:
+          description: Service fail
+          content: {}
+  /reviews/{user_id}:
+    get:
+      tags:
+      - Reviews
+      summary: Return all reviews belonging to the specified user
+      operationId: reviews.get_user_reviews
+      parameters:
+      - name: user_id
+        in: path
+        description: User's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+      responses:
+        200:
+          description: Return reviews belonging to user with id 'user_id'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reviews:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Review'
+        500:
+          description: Service fail
+          content: {}
 components:
   schemas:
     Restaurant:
@@ -170,3 +267,27 @@ components:
         seats:
           type: integer
           description: Number of seats at the table
+    Review:
+      required:
+      - reviewer_id
+      - stars
+      - text_review
+      - restaurant_id
+      type: object
+      properties:
+        reviewer_id:
+          type: integer
+          description: Identifier of the user which submitted that review
+          example: 1
+        stars:
+          type: number
+          example: 3.5
+        text_review:
+          type: string
+          example: "Nice place!"
+          description: Textual review of the restaurant
+        marked:
+          type: boolean
+          example: False
+          description: True iff it has been counted in review stars averaging
+      
