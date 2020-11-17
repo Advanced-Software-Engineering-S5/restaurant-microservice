@@ -37,7 +37,6 @@ paths:
               type: object
               properties:
                 restaurant_ids:
-                  required: True
                   type: array
                   description: List of ids of restaurants to be retrieved
                   items:
@@ -53,10 +52,7 @@ paths:
                   restaurants:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        restaurant_id:
-                          $ref: '#/components/schemas/Restaurant'                  
+                      $ref: '#/components/schemas/Restaurant'                  
         400:
           description: Bad Request, missing parameters
           content: {}

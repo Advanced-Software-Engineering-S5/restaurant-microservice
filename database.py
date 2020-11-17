@@ -12,7 +12,7 @@ class Restaurant(db.Model):
     lon = db.Column(db.Float) # restaurant longitude
     phone = db.Column(db.Text(20), unique=True)
     extra_info = db.Column(db.Text(300)) # restaurant infos (menu, ecc.)
-    #avg_stay_time = db.Column(db.Time, default=time(hour=1))
+    avg_stay_time = db.Column(db.Time, default=time(hour=1))
     avg_stars = db.Column(db.Float, default=0.0)
     num_reviews = db.Column(db.Integer, default=0)
 
