@@ -12,16 +12,16 @@ def get_restaurant(restaurant_id):
         return 'Restaurant not found',404
     return q.to_dict()
 
+def get_multiple_restaurants():
+    try:
+        rest_ids = request.get_json()['restaurant_ids']
+        restaurants = Restaurant.query.filter(id.in_(rest_ids)).all()
+        return {'restaurants': [r.to_dict() for r in restaurants]}
+    except:
+        return {}, 500
+
 
 def get_restaurant_tables(restaurant_id):
-    """[summary]
-
-    Args:
-        restaurant_id ([type]): [description]
-
-    Returns:
-        [type]: [description]
-    """
     seats = request.args.get('seats', None)
     if seats:
         tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id, seats=seats)
@@ -78,11 +78,3 @@ def edit_restaurant(restaurant_id):
         return {}, 201
     except Exception as e:
         return str(e), 500
-
-def get_multiple_restaurants():
-    try:
-        rest_ids = request.get_json()['restaurant_ids']
-        restaurants = Restaurant.query.filter(id.in_(rest_ids)).all()
-        return {'restaurants': [r.to_dict() for r in restaurants]}
-    except:
-        return {}, 500
