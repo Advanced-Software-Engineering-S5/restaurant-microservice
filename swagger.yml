@@ -11,7 +11,7 @@ paths:
       tags:
       - Restaurants
       summary: Get all restaurants
-      operationId: views.restaurant.get_restaurants
+      operationId: restaurant.get_restaurants
       responses:
         200:
           description: Return all restaurants
@@ -28,7 +28,7 @@ paths:
       tags:
       - Multiple Restaurants
       summary: Get all restaurants matching the specified ids
-      operationId: restaurants.get_multiple_restaurants
+      operationId: restaurant.get_multiple_restaurants
       requestBody:
         required: true
         content:
@@ -64,7 +64,7 @@ paths:
       tags:
       - Restaurants
       summary: Get a single restaurant specified by the id 'restaurant_id'
-      operationId: views.restaurant.get_restaurant
+      operationId: restaurant.get_restaurant
       parameters:
       - name: restaurant_id
         in: path
@@ -83,12 +83,63 @@ paths:
         404:
           description: Restaurant 'restaurant_id' does not exists
           content: {}
+    delete:
+      tags:
+      - Restaurants
+      summary: Delete a single restaurant specified by the id 'restaurant_id'
+      operationId: restaurant.delete_restaurant
+      parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string 
+      responses:
+        200:
+          description: Restaurant with id 'restaurant_id' deleted
+          content: {}
+        404:
+          description: Restaurant 'restaurant_id' does not exists
+          content: {}
+
+  /restaurants/tables/{restaurant_id}:
+    get:
+      tags:
+      - Restaurants
+      summary: Get a single restaurant's tables
+      operationId: restaurant.get_restaurant_tables
+      parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+      - name: seats
+        in: query
+        description: Number of seats
+        required: false
+        schema:
+          type: integer
+      responses:
+        200:
+          description: Return tables of the restaurant with id 'restaurant_id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestaurantTable'
+        404:
+          description: Restaurant 'restaurant_id' does not exists
+          content: {}
   /restaurants/create:
     post:
       tags:
       - Restaurants
       summary: Create a new restaurant
-      operationId: views.restaurant.create_restaurant
+      operationId: restaurant.create_restaurant
       requestBody:
         required: true
         content:
@@ -122,7 +173,7 @@ paths:
       tags:
       - Restaurants
       summary: Update a restaurant and its tables
-      operationId: views.restaurant.edit_restaurant
+      operationId: restaurant.edit_restaurant
       requestBody:
         required: true
         content:
@@ -174,7 +225,33 @@ paths:
         500:
           description: Service fail
           content: {}
-  /reviews/{user_id}:
+    post:
+      tags:
+      - Reviews
+      summary: Add a new review for the restaurant 'restaurant_id'
+      operationId: reviews.add_review
+      parameters:
+      - name: restaurant_id
+        in: path
+        description: Restaurant's Unique identifier
+        required: true
+        schema:
+          pattern: ^[a-zA-Z0-9-]+$
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'  
+      responses:
+        201:
+          description: Review created
+          content: {}
+        500:
+          description: Generic database error
+          content: {}
+  /reviews/user/{user_id}:
     get:
       tags:
       - Reviews
@@ -267,11 +344,13 @@ components:
       required:
       - reviewer_id
       - stars
-      - text_review
-      - restaurant_id
       type: object
       properties:
         reviewer_id:
+          type: integer
+          description: Identifier of the user which submitted that review
+          example: 1
+        restaurant_id:
           type: integer
           description: Identifier of the user which submitted that review
           example: 1

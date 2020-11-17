@@ -1,6 +1,6 @@
 import datetime as dt
 from flask_sqlalchemy import SQLAlchemy
-from datetime import time
+from datetime import datetime, time
 
 db = SQLAlchemy()
 
@@ -26,7 +26,14 @@ class Restaurant(db.Model):
     tables = db.relationship("RestaurantTable", back_populates="restaurant")
 
     def to_dict(self):
-        return {column.name:getattr(self, column.name) for column in self.__table__.columns}
+        c = {}
+        for column in self.__table__.columns:
+            a = getattr(self, column.name)
+            if isinstance(a, (datetime, time)):
+                c[column.name] = str(a.isoformat())
+            else:
+                c[column.name] = a
+        return c
         
 
 
