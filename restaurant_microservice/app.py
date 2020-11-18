@@ -1,8 +1,9 @@
 # from database import Restaurant
 import datetime
 from datetime import time
-from database import RestaurantTable, db, Restaurant
+from restaurant_microservice.database import RestaurantTable, db, Restaurant
 import connexion, logging
+import os
 
 db_session = None
 
@@ -16,8 +17,8 @@ def create_app(dbfile='sqlite:///restaurant_gooutsafe.db'):
     app.config['SQLALCHEMY_DATABASE_URI'] = dbfile
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # celery config
-    app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379'
-    app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379'
+    app.config['CELERY_BROKER_URL'] = f"redis://{os.environ.get('GOS_REDIS')}"
+    app.config['CELERY_RESULT_BACKEND'] = f"redis://{os.environ.get('GOS_REDIS')}"
 
     db.init_app(app)
     db.create_all(app=app)

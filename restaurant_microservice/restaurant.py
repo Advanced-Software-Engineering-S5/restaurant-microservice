@@ -1,4 +1,4 @@
-from database import db, Restaurant, Review, RestaurantTable
+from restaurant_microservice.database import db, Restaurant, Review, RestaurantTable
 from flask import jsonify, request
 from sqlalchemy import exc
 
