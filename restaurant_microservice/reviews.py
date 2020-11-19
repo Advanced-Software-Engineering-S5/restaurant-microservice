@@ -1,6 +1,6 @@
-from database import Review
+from restaurant_microservice.database import Review
 from flask import request
-from database import db, Review
+from restaurant_microservice.database import db, Review
 from sqlalchemy import exc
 
 def add_review(restaurant_id):

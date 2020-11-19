@@ -1,7 +1,7 @@
 # from database import Restaurant
 import datetime
 from datetime import time
-from database import RestaurantTable, db, Restaurant
+from restaurant_microservice.database import RestaurantTable, db, Restaurant
 import connexion, logging
 
 db_session = None
@@ -51,7 +51,6 @@ def create_app(dbfile='sqlite:///restaurant_gooutsafe.db'):
 # @application.teardown_appcontext
 # def shutdown_session(exception=None):
 #     db_session.remove()
-
 
 if __name__ == '__main__':
     app = create_app()
