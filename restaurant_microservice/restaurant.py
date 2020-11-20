@@ -15,7 +15,7 @@ def get_restaurant(restaurant_id):
 def get_multiple_restaurants():
     try:
         rest_ids = request.get_json()['restaurant_ids']
-        restaurants = Restaurant.query.filter(id.in_(rest_ids)).all()
+        restaurants = Restaurant.query.filter(Restaurant.id.in_(rest_ids)).all()
         return {'restaurants': [r.to_dict() for r in restaurants]}
     except:
         return {}, 500
@@ -24,10 +24,10 @@ def get_multiple_restaurants():
 def get_restaurant_tables(restaurant_id):
     seats = request.args.get('seats', None)
     if seats:
-        tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id, seats=seats)
+        tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id, seats=seats).all()
     else:
-        tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id)
-    if tables is None:
+        tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id).all()
+    if tables is None or not tables:
         return 'Restaurant not found',404
     response = []
     for t in tables:
@@ -60,8 +60,8 @@ def delete_restaurant(restaurant_id):
 def edit_restaurant(restaurant_id):
     body = request.get_json()
     tables = body['tables']
-    RestaurantTable.query.filter_by(restaurant_id = restaurant_id).delete()
     try:
+        RestaurantTable.query.filter_by(restaurant_id = restaurant_id).delete()
         db.session.commit()
     except Exception as e:
         return str(e), 500

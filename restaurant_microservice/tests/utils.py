@@ -2,7 +2,7 @@ from restaurant_microservice.database import Restaurant, db, RestaurantTable
 from datetime import datetime, timedelta, time
 import random, connexion
 from flask import Flask
-
+"""
 user_data = {'email':'prova@prova.com', 
         'firstname':'Mario', 
         'lastname':'Rossi', 
@@ -56,3 +56,4 @@ def setup_for_test():
     # set the WSGI application callable to allow using uWSGI:
     # uwsgi --http :8080 -w app
     return app
+"""

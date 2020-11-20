@@ -1,8 +1,8 @@
 # from database import Restaurant
 import datetime
 from datetime import time
-from restaurant_microservice.database import RestaurantTable, db, Restaurant
 import connexion, logging
+from restaurant_microservice.database import RestaurantTable, db, Restaurant
 
 db_session = None
 

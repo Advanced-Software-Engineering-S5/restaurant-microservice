@@ -11,7 +11,7 @@ paths:
       tags:
       - Restaurants
       summary: Get all restaurants
-      operationId: restaurant.get_restaurants
+      operationId: restaurant_microservice.restaurant.get_restaurants
       responses:
         200:
           description: Return all restaurants
@@ -28,7 +28,7 @@ paths:
       tags:
       - Multiple Restaurants
       summary: Get all restaurants matching the specified ids
-      operationId: restaurant.get_multiple_restaurants
+      operationId: restaurant_microservice.restaurant.get_multiple_restaurants
       requestBody:
         required: true
         content:
@@ -64,7 +64,7 @@ paths:
       tags:
       - Restaurants
       summary: Get a single restaurant specified by the id 'restaurant_id'
-      operationId: restaurant.get_restaurant
+      operationId: restaurant_microservice.restaurant.get_restaurant
       parameters:
       - name: restaurant_id
         in: path
@@ -87,7 +87,7 @@ paths:
       tags:
       - Restaurants
       summary: Delete a single restaurant specified by the id 'restaurant_id'
-      operationId: restaurant.delete_restaurant
+      operationId: restaurant_microservice.restaurant.delete_restaurant
       parameters:
       - name: restaurant_id
         in: path
@@ -109,7 +109,7 @@ paths:
       tags:
       - Restaurants
       summary: Get a single restaurant's tables
-      operationId: restaurant.get_restaurant_tables
+      operationId: restaurant_microservice.restaurant.get_restaurant_tables
       parameters:
       - name: restaurant_id
         in: path
@@ -139,7 +139,7 @@ paths:
       tags:
       - Restaurants
       summary: Create a new restaurant
-      operationId: restaurant.create_restaurant
+      operationId: restaurant_microservice.restaurant.create_restaurant
       requestBody:
         required: true
         content:
@@ -173,7 +173,7 @@ paths:
       tags:
       - Restaurants
       summary: Update a restaurant and its tables
-      operationId: restaurant.edit_restaurant
+      operationId: restaurant_microservice.restaurant.edit_restaurant
       requestBody:
         required: true
         content:
@@ -201,7 +201,7 @@ paths:
       tags:
       - Reviews
       summary: Return all reviews belonging to the specified restaurant
-      operationId: reviews.get_restaurant_reviews
+      operationId: restaurant_microservice.reviews.get_restaurant_reviews
       parameters:
       - name: restaurant_id
         in: path
@@ -229,7 +229,7 @@ paths:
       tags:
       - Reviews
       summary: Add a new review for the restaurant 'restaurant_id'
-      operationId: reviews.add_review
+      operationId: restaurant_microservice.reviews.add_review
       parameters:
       - name: restaurant_id
         in: path
@@ -256,7 +256,7 @@ paths:
       tags:
       - Reviews
       summary: Return all reviews belonging to the specified user
-      operationId: reviews.get_user_reviews
+      operationId: restaurant_microservice.reviews.get_user_reviews
       parameters:
       - name: user_id
         in: path
