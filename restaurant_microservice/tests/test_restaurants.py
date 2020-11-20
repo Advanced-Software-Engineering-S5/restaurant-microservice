@@ -52,11 +52,11 @@ class TestRestaurants(unittest.TestCase):
 
     def test_create_restaurant(self):
         with self.app.test_client() as client:
-            response = client.post("/restaurants/create", json=self.restaurant_data)
+            response = client.post("/restaurants/new", json=self.restaurant_data)
             self.assertEqual(response.status_code, 500)
             a = self.restaurant_data.copy()
             a['phone'] = '322222222'
-            response = client.post("/restaurants/create", json=a)
+            response = client.post("/restaurants/new", json=a)
             self.assertEqual(response.status_code, 200)
 
 
@@ -77,7 +77,7 @@ class TestRestaurants(unittest.TestCase):
                     {"table_id":2, "seats":8}
                 ]
             }
-            response = client.put("/restaurants/update/1", json=data)
+            response = client.put("/restaurants/1", json=data)
             self.assertEqual(response.status_code, 201)
             # response = client.put("/restaurants/update/10", json=data)
             # self.assertEqual(response.status_code, 500)
