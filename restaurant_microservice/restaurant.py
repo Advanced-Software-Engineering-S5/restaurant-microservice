@@ -4,19 +4,19 @@ from sqlalchemy import exc
 
 def get_restaurants():  
     allrestaurants = db.session.query(Restaurant)
-    return [p.to_dict() for p in allrestaurants]
+    return [p.to_dict() for p in allrestaurants], 200
 
 def get_restaurant(restaurant_id):  
     q = Restaurant.query.filter_by(id=restaurant_id).first()
     if q is None:
         return 'Restaurant not found',404
-    return q.to_dict()
+    return q.to_dict(), 200
 
 def get_multiple_restaurants():
     try:
         rest_ids = request.get_json()['restaurant_ids']
         restaurants = Restaurant.query.filter(Restaurant.id.in_(rest_ids)).all()
-        return {'restaurants': [r.to_dict() for r in restaurants]}
+        return {'restaurants': [r.to_dict() for r in restaurants]}, 200
     except:
         return {}, 500
 
@@ -60,6 +60,14 @@ def delete_restaurant(restaurant_id):
 def edit_restaurant(restaurant_id):
     body = request.get_json()
     tables = body['tables']
+    r : Restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
+    if r is None:
+        return 'Restaurant not found',404
+
+    if "phone" in body:
+        r.phone = body['phone']
+    if "extra_info" in body:
+        r.extra_info = body['extra_info']
     try:
         RestaurantTable.query.filter_by(restaurant_id = restaurant_id).delete()
         db.session.commit()

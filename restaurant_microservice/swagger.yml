@@ -191,8 +191,13 @@ paths:
         description: Restaurant's Unique identifier
         required: true
         schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string
+          type: integer
+      - name: user_id
+        in: query
+        description: User Unique identifier
+        required: false
+        schema:
+          type: integer
       responses:
         200:
           description: Return reviews belonging to restaurant with id 'restaurant_id'
@@ -219,8 +224,7 @@ paths:
         description: Restaurant's Unique identifier
         required: true
         schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string
+          type: integer
       requestBody:
         required: true
         content:

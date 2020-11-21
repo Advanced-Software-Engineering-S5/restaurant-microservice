@@ -72,6 +72,7 @@ class TestRestaurants(unittest.TestCase):
         with self.app.test_client() as client:
             data = {
                 "phone":"222222222",
+                "extra_info": "ciaone",
                 "tables":[
                     {"table_id":1, "seats":4},
                     {"table_id":2, "seats":8}

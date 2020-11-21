@@ -17,6 +17,8 @@ class TestReviews(unittest.TestCase):
         with self.app.test_client() as client:
             response = client.get("/reviews/1")
             self.assertEqual(response.status_code, 200)
+            response = client.get("/reviews/1?user_id=1")
+            self.assertEqual(response.status_code, 200)
 
     def test_get_reviews_user(self):
         with self.app.test_client() as client:

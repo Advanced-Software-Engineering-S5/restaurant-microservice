@@ -30,7 +30,7 @@ class Restaurant(db.Model):
         for column in self.__table__.columns:
             a = getattr(self, column.name)
             if isinstance(a, (datetime, time)):
-                c[column.name] = str(a.isoformat())
+                c[column.name] = a.strftime("%H:%M:%S")
             else:
                 c[column.name] = a
         return c

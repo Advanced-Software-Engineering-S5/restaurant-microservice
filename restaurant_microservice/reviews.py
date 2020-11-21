@@ -14,10 +14,13 @@ def add_review(restaurant_id):
         return "A review of the user to this restaurant already exists", 500
     return {}, 201
 
-def get_restaurant_reviews(restaurant_id):
-    allreviews = Review.query.filter_by(restaurant_id=restaurant_id)
-    return [p.to_dict() for p in allreviews]
+def get_restaurant_reviews(restaurant_id, user_id=None):
+    if user_id:
+        reviews = Review.query.filter_by(restaurant_id=restaurant_id, reviewer_id=int(user_id))
+    else:
+        reviews = Review.query.filter_by(restaurant_id=restaurant_id)
+    return [p.to_dict() for p in reviews], 200
 
 def get_user_reviews(user_id):
     allreviews = Review.query.filter_by(reviewer_id=user_id)
-    return [p.to_dict() for p in allreviews]
+    return [p.to_dict() for p in allreviews], 200
