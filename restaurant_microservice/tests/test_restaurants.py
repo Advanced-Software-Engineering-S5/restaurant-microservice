@@ -12,6 +12,7 @@ class TestRestaurants(unittest.TestCase):
                     'extra_info': 'Rigatoni dorati h24, cucina povera'}
         table_2 = {'table_id':2, 'restaurant_id':1, 'seats':6}
         self.app = create_app(dbfile='sqlite:///:memory:')
+        #self.app = create_app(dbfile='sqlite:///test2.db')
         with self.app.app_context():
             db.session.add(Restaurant(**self.restaurant_data))
             db.session.add(RestaurantTable(**table_2))
@@ -64,9 +65,9 @@ class TestRestaurants(unittest.TestCase):
 
     def test_delete_restaurant(self):
         with self.app.test_client() as client:
-            response = client.delete("/restaurants/2")
+            response = client.delete("/restaurants/1")
             self.assertEqual(response.status_code, 200)
-            response = client.delete("/restaurants/2")
+            response = client.delete("/restaurants/1")
             self.assertEqual(response.status_code, 404)
 
     

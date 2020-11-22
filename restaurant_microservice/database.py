@@ -23,8 +23,8 @@ class Restaurant(db.Model):
     # reservations = db.relationship("Reservation", back_populates="restaurant")
 
     #One to many relationship
-    tables = db.relationship("RestaurantTable", back_populates="restaurant")
-
+    tables = db.relationship("RestaurantTable", cascade="all, delete", back_populates="restaurant")
+    reviews = db.relationship("Review", cascade="all, delete", back_populates="restaurant", )
     def to_dict(self):
         c = {}
         for column in self.__table__.columns:
