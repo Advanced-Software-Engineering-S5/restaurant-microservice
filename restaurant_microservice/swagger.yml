@@ -122,6 +122,9 @@ paths:
         404:
           description: Restaurant 'restaurant_id' does not exists
           content: {}
+        500:
+          description: Generic server error
+          content: {}
 
   /restaurants/tables/{restaurant_id}:
     get:
