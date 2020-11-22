@@ -1,3 +1,4 @@
+from datetime import datetime
 from restaurant_microservice.database import RestaurantTable, db, Restaurant
 import unittest, logging
 from restaurant_microservice.app import create_app
@@ -56,6 +57,7 @@ class TestRestaurants(unittest.TestCase):
             self.assertEqual(response.status_code, 500)
             a = self.restaurant_data.copy()
             a['phone'] = '322222222'
+            a['avg_stay_time'] = datetime.now().strftime("%H:%M:%S")
             response = client.post("/restaurants/new", json=a)
             self.assertEqual(response.status_code, 200)
 

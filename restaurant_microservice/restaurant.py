@@ -1,3 +1,4 @@
+from datetime import time
 from restaurant_microservice.database import db, Restaurant, RestaurantTable
 from flask import jsonify, request
 from sqlalchemy import exc
@@ -38,6 +39,9 @@ def get_restaurant_tables(restaurant_id):
 
 def create_restaurant():
     body = request.get_json()
+    if 'avg_stay_time' in body:
+        t = body['avg_stay_time']
+        body['avg_stay_time'] = time(*[int(g) for g in t.split(':')])
     r = Restaurant(**body)
     try:
         db.session.add(r)

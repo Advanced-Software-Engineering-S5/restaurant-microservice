@@ -307,7 +307,7 @@ components:
           example: "050123456"
         avg_stay_time:
           type: string
-          format: date-time
+          format: string
         avg_stars:
           type: number
         num_reviews:
