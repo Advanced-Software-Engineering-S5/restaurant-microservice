@@ -48,7 +48,7 @@ def create_restaurant():
         db.session.commit()
     except exc.IntegrityError as e:
         return "A restaurant with the same phone number already exists", 500
-    return r.id, 200
+    return r.id, 201
 
 def delete_restaurant(restaurant_id):
     q = Restaurant.query.filter_by(id=restaurant_id).first()

@@ -60,7 +60,7 @@ class TestRestaurants(unittest.TestCase):
             a['phone'] = '322222222'
             a['avg_stay_time'] = datetime.now().strftime("%H:%M:%S")
             response = client.post("/restaurants/new", json=a)
-            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.status_code, 201)
 
 
     def test_delete_restaurant(self):

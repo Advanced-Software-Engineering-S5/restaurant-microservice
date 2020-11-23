@@ -278,9 +278,6 @@ components:
       - lat
       - lon
       - phone
-      # - avg_stay_time
-      # - avg_stars
-      # - num_reviews
       type: object
       properties:
         id:
