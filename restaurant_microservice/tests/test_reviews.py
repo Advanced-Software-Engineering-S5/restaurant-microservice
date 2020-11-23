@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import unittest
 from restaurant_microservice.tests.utils import *
 from restaurant_microservice.background import make_celery
@@ -43,3 +44,38 @@ class ReviewTest(unittest.TestCase):
             rest = Restaurant.query.filter_by(id=rest['id']).first()
             self.assertEqual(rest.avg_stars, stars)
             self.assertEqual(rest.num_reviews, 1)
+=======
+from restaurant_microservice.database import RestaurantTable, db, Restaurant
+import unittest
+from restaurant_microservice.app import create_app
+
+class TestReviews(unittest.TestCase):
+    def setUp(self) -> None:
+        self.review = {'reviewer_id':1,
+            'stars':3}
+        self.app = create_app(dbfile='sqlite:///:memory:')
+        with self.app.app_context():
+            #db.session.add(Restaurant(**self.restaurant_data))
+            #db.session.add(RestaurantTable(**table_2))
+            db.session.commit()
+
+    
+    def test_get_reviews_restaurant(self):
+        with self.app.test_client() as client:
+            response = client.get("/reviews/1")
+            self.assertEqual(response.status_code, 200)
+            response = client.get("/reviews/1?user_id=1")
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_reviews_user(self):
+        with self.app.test_client() as client:
+            response = client.get("/reviews/user/1")
+            self.assertEqual(response.status_code, 200)
+
+    def test_add_review(self):
+        with self.app.test_client() as client:
+            response = client.post("/reviews/1", json=self.review)
+            self.assertEqual(response.status_code, 201)
+            response = client.post("/reviews/1", json=self.review)
+            self.assertEqual(response.status_code, 500)
+>>>>>>> a9d34307e27aa33bfc53cb0d9b8ad8c3865aeca1

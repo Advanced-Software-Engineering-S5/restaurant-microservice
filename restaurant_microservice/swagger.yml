@@ -60,12 +60,7 @@ paths:
           description: Service Fail
           content: {}
   /restaurants/{restaurant_id}:
-    get:
-      tags:
-      - Restaurants
-      summary: Get a single restaurant specified by the id 'restaurant_id'
-      operationId: restaurant_microservice.restaurant.get_restaurant
-      parameters:
+    parameters:
       - name: restaurant_id
         in: path
         description: Restaurant's Unique identifier
@@ -73,6 +68,11 @@ paths:
         schema:
           pattern: ^[a-zA-Z0-9-]+$
           type: string
+    get:
+      tags:
+      - Restaurants
+      summary: Get a single restaurant specified by the id 'restaurant_id'
+      operationId: restaurant_microservice.restaurant.get_restaurant
       responses:
         200:
           description: Return restaurant with id 'restaurant_id'
@@ -83,25 +83,47 @@ paths:
         404:
           description: Restaurant 'restaurant_id' does not exists
           content: {}
+    put:
+      tags:
+      - Restaurants
+      summary: Update a restaurant and its tables
+      operationId: restaurant_microservice.restaurant.edit_restaurant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone:
+                  type: string
+                  description: The new phone number
+                tables:
+                  type: array
+                  description: todo
+                  items:
+                    $ref: '#/components/schemas/RestaurantTable' 
+      responses:
+        201:
+          description: Restaurant updated
+          content: {}
+        500:
+          description: Generic server error
+          content: {}
     delete:
       tags:
       - Restaurants
       summary: Delete a single restaurant specified by the id 'restaurant_id'
       operationId: restaurant_microservice.restaurant.delete_restaurant
-      parameters:
-      - name: restaurant_id
-        in: path
-        description: Restaurant's Unique identifier
-        required: true
-        schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string 
       responses:
         200:
           description: Restaurant with id 'restaurant_id' deleted
           content: {}
         404:
           description: Restaurant 'restaurant_id' does not exists
+          content: {}
+        500:
+          description: Generic server error
           content: {}
 
   /restaurants/tables/{restaurant_id}:
@@ -134,7 +156,7 @@ paths:
         404:
           description: Restaurant 'restaurant_id' does not exists
           content: {}
-  /restaurants/create:
+  /restaurants/new:
     post:
       tags:
       - Restaurants
@@ -160,42 +182,6 @@ paths:
         500:
           description: Generic database error
           content: {}
-  /restaurants/update/{restaurant_id}:
-    parameters:
-      - name: restaurant_id
-        in: path
-        description: Restaurant's Unique identifier
-        required: true
-        schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string
-    put:
-      tags:
-      - Restaurants
-      summary: Update a restaurant and its tables
-      operationId: restaurant_microservice.restaurant.edit_restaurant
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                phone:
-                  type: string
-                  description: The new phone number
-                tables:
-                  type: array
-                  description: todo
-                  items:
-                    $ref: '#/components/schemas/RestaurantTable' 
-      responses:
-        201:
-          description: Restaurant updated
-          content: {}
-        500:
-          description: Generic server error
-          content: {}
   /reviews/{restaurant_id}:
     get:
       tags:
@@ -208,8 +194,13 @@ paths:
         description: Restaurant's Unique identifier
         required: true
         schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string
+          type: integer
+      - name: user_id
+        in: query
+        description: User Unique identifier
+        required: false
+        schema:
+          type: integer
       responses:
         200:
           description: Return reviews belonging to restaurant with id 'restaurant_id'
@@ -236,8 +227,7 @@ paths:
         description: Restaurant's Unique identifier
         required: true
         schema:
-          pattern: ^[a-zA-Z0-9-]+$
-          type: string
+          type: integer
       requestBody:
         required: true
         content:
@@ -288,9 +278,6 @@ components:
       - lat
       - lon
       - phone
-      # - avg_stay_time
-      # - avg_stars
-      # - num_reviews
       type: object
       properties:
         id:
@@ -320,7 +307,7 @@ components:
           example: "050123456"
         avg_stay_time:
           type: string
-          format: date-time
+          format: string
         avg_stars:
           type: number
         num_reviews:
