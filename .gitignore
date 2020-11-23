@@ -131,3 +131,4 @@ dmypy.json
 # ase
 *.db
 .vscode/
+celerybeat*
