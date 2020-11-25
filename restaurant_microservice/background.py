@@ -4,7 +4,7 @@ from celery import Celery
 import os
 
 # set this configs as env variables
-BACKEND = BROKER = f"redis://{os.environ.get('GOS_REDIS')}"
+# BACKEND = BROKER = f"redis://{os.environ.get('GOS_REDIS')}"
 def make_celery(app):
     # create celery object from single flask app configuration
     celery = Celery(__name__, backend=app.config['CELERY_RESULT_BACKEND'], 

@@ -17,8 +17,8 @@ def create_app_for_test():
     app.config['SECRET_KEY'] = 'ANOTHER ONE'
 
     # celery config
-    app.config['CELERY_BROKER_URL'] = f"redis://{os.environ.get('GOS_REDIS')}"
-    app.config['CELERY_RESULT_BACKEND'] = f"redis://{os.environ.get('GOS_REDIS')}"
+    app.config['CELERY_BROKER_URL'] = f"redis://{os.environ.get('GOS_REDIS')}/{os.environ.get('CELERY_DB_NUM')}"
+    app.config['CELERY_RESULT_BACKEND'] = f"redis://{os.environ.get('GOS_REDIS')}/{os.environ.get('CELERY_DB_NUM')}"
 
     db.init_app(app)
     db.create_all(app=app)
