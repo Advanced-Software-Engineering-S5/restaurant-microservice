@@ -1,5 +1,5 @@
 from datetime import datetime
-from restaurant_microservice.database import RestaurantTable, db, Restaurant
+from restaurant_microservice.database import RestaurantTable, Review, db, Restaurant
 import unittest, logging
 from restaurant_microservice.app import create_app
 
@@ -11,11 +11,13 @@ class TestRestaurants(unittest.TestCase):
                     'phone': '3333333333',
                     'extra_info': 'Rigatoni dorati h24, cucina povera'}
         table_2 = {'table_id':2, 'restaurant_id':1, 'seats':6}
+        review = {'reviewer_id':1, 'restaurant_id':1, 'stars':3}
         self.app = create_app(dbfile='sqlite:///:memory:')
         #self.app = create_app(dbfile='sqlite:///test2.db')
         with self.app.app_context():
             db.session.add(Restaurant(**self.restaurant_data))
             db.session.add(RestaurantTable(**table_2))
+            db.session.add(Review(**review))
             db.session.commit()
 
 
