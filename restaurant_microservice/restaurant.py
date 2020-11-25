@@ -3,17 +3,23 @@ from restaurant_microservice.database import db, Restaurant, RestaurantTable
 from flask import jsonify, request
 from sqlalchemy import exc
 
-def get_restaurants():  
+def get_restaurants():
+    """Returns all the restaurants in the db
+    """
     allrestaurants = db.session.query(Restaurant)
     return [p.to_dict() for p in allrestaurants], 200
 
-def get_restaurant(restaurant_id):  
+def get_restaurant(restaurant_id): 
+    """Returns a single restaurant
+    """
     q = Restaurant.query.filter_by(id=restaurant_id).first()
     if q is None:
         return 'Restaurant not found',404
     return q.to_dict(), 200
 
 def get_multiple_restaurants():
+    """Returns multiple restaurant specified by the json request
+    """
     try:
         rest_ids = request.get_json()['restaurant_ids']
         restaurants = Restaurant.query.filter(Restaurant.id.in_(rest_ids)).all()
@@ -23,6 +29,8 @@ def get_multiple_restaurants():
 
 
 def get_restaurant_tables(restaurant_id):
+    """Returns all the restaurant tables for the restaurant
+    """
     seats = request.args.get('seats', None)
     if seats:
         tables = RestaurantTable.query.filter_by(restaurant_id=restaurant_id, seats=seats).all()
@@ -38,6 +46,8 @@ def get_restaurant_tables(restaurant_id):
     return m
 
 def create_restaurant():
+    """Creates a new restaurant
+    """
     body = request.get_json()
     if 'avg_stay_time' in body:
         t = body['avg_stay_time']
@@ -51,6 +61,8 @@ def create_restaurant():
     return r.id, 201
 
 def delete_restaurant(restaurant_id):
+    """Deletes a restaurant
+    """
     q = Restaurant.query.filter_by(id=restaurant_id).first()
     if q is None:
         return 'Restaurant not found',404
@@ -62,6 +74,8 @@ def delete_restaurant(restaurant_id):
     return {}, 200
 
 def edit_restaurant(restaurant_id):
+    """Edits a restaurant info, including its tables.
+    """
     body = request.get_json()
     tables = body['tables']
     r : Restaurant = Restaurant.query.filter_by(id=restaurant_id).first()
